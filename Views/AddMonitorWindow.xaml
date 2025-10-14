@@ -1,0 +1,284 @@
+<Window x:Class="GhostOverlay.Views.AddMonitorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add New Monitor"
+        Width="550"
+        Height="600"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GhostOverlay;component/Resources/Styles/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Background="{StaticResource DarkSurfaceBrush}"
+            BorderBrush="{StaticResource PrimaryBlueBrush}"
+            BorderThickness="2"
+            CornerRadius="12">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20"
+                            ShadowDepth="4"
+                            Opacity="0.5"
+                            Color="Black"/>
+        </Border.Effect>
+
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="40" Height="40"
+                            Background="{StaticResource PrimaryBlueBrush}"
+                            CornerRadius="8"
+                            Margin="0,0,12,0">
+                        <TextBlock Text="➕"
+                                   FontSize="22"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Add New Monitor"
+                                   Style="{StaticResource HeaderTextStyle}"
+                                   FontSize="20"/>
+                        <TextBlock Text="Configure a new endpoint to monitor"
+                                   Style="{StaticResource CaptionTextStyle}"
+                                   FontSize="11"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Button Content="✖"
+                        Style="{StaticResource IconButtonStyle}"
+                        Click="Close_Click"
+                        ToolTip="Close"
+                        HorizontalAlignment="Right"/>
+            </Grid>
+
+            <!-- Form Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,-10,0" Padding="0,0,10,0">
+                <StackPanel>
+                    <!-- Monitor Name -->
+                    <TextBlock Text="Monitor Name *"
+                               Style="{StaticResource BodyTextStyle}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,8"/>
+                    <TextBox x:Name="NameTextBox"
+                             Style="{StaticResource ModernTextBoxStyle}"
+                             Height="40"
+                             FontSize="14"
+                             Margin="0,0,0,20"
+                             ToolTip="Enter a friendly name for this monitor"/>
+
+                    <!-- Monitor Type -->
+                    <TextBlock Text="Monitor Type *"
+                               Style="{StaticResource BodyTextStyle}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,8"/>
+                    <ComboBox x:Name="TypeComboBox"
+                              Style="{StaticResource ModernComboBoxStyle}"
+                              Height="40"
+                              FontSize="14"
+                              Margin="0,0,0,8"
+                              SelectionChanged="TypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="HTTP/HTTPS" IsSelected="True" Tag="Http"/>
+                        <ComboBoxItem Content="ICMP Ping" Tag="Ping"/>
+                        <ComboBoxItem Content="TCP Port" Tag="Tcp"/>
+                    </ComboBox>
+
+                    <!-- Type Description -->
+                    <Border Background="{StaticResource DarkBackgroundBrush}"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="12"
+                            Margin="0,0,0,20">
+                        <TextBlock x:Name="TypeDescriptionText"
+                                   Style="{StaticResource CaptionTextStyle}"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   Text="Monitors HTTP/HTTPS endpoints by sending HEAD requests. Supports SSL certificate validation."/>
+                    </Border>
+
+                    <!-- Target -->
+                    <TextBlock Text="Target *"
+                               Style="{StaticResource BodyTextStyle}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,8"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Style="{StaticResource ModernTextBoxStyle}"
+                             Height="40"
+                             FontSize="14"
+                             Margin="0,0,0,8"/>
+                    <TextBlock x:Name="TargetHintText"
+                               Style="{StaticResource CaptionTextStyle}"
+                               FontSize="10"
+                               Margin="0,0,0,20"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               Text="Example: https://www.google.com"/>
+
+                    <!-- Advanced Settings Expander -->
+                    <Expander x:Name="AdvancedExpander"
+                              Header="Advanced Settings"
+                              IsExpanded="False"
+                              Background="{StaticResource DarkSurfaceElevatedBrush}"
+                              BorderBrush="{StaticResource DarkBorderBrush}"
+                              BorderThickness="1"
+                              Margin="0,0,0,20">
+                        <Expander.Style>
+                            <Style TargetType="Expander">
+                                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Padding" Value="12,10"/>
+                            </Style>
+                        </Expander.Style>
+
+                        <StackPanel Margin="12,10,12,12">
+                            <!-- Check Interval -->
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Check Interval (seconds)"
+                                           Style="{StaticResource BodyTextStyle}"
+                                           FontSize="13"
+                                           VerticalAlignment="Center"/>
+                                <TextBox x:Name="IntervalTextBox"
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         Height="35"
+                                         Text="60"
+                                         TextAlignment="Center"
+                                         FontSize="13"/>
+                            </Grid>
+
+                            <!-- Timeout -->
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Timeout (milliseconds)"
+                                           Style="{StaticResource BodyTextStyle}"
+                                           FontSize="13"
+                                           VerticalAlignment="Center"/>
+                                <TextBox x:Name="TimeoutTextBox"
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         Height="35"
+                                         Text="5000"
+                                         TextAlignment="Center"
+                                         FontSize="13"/>
+                            </Grid>
+
+                            <!-- Slow Threshold -->
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Slow Threshold (ms)"
+                                           Style="{StaticResource BodyTextStyle}"
+                                           FontSize="13"
+                                           VerticalAlignment="Center"/>
+                                <TextBox x:Name="SlowThresholdTextBox"
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         Height="35"
+                                         Text="800"
+                                         TextAlignment="Center"
+                                         FontSize="13"/>
+                            </Grid>
+
+                            <!-- Retry Count -->
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Retry Count"
+                                           Style="{StaticResource BodyTextStyle}"
+                                           FontSize="13"
+                                           VerticalAlignment="Center"/>
+                                <TextBox x:Name="RetryCountTextBox"
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         Height="35"
+                                         Text="3"
+                                         TextAlignment="Center"
+                                         FontSize="13"/>
+                            </Grid>
+
+                            <!-- Exponential Backoff -->
+                            <CheckBox x:Name="ExponentialBackoffCheckBox"
+                                      Content="Use Exponential Backoff"
+                                      IsChecked="True"
+                                      Style="{StaticResource ModernCheckBoxStyle}"
+                                      FontSize="13"/>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Enable Monitoring -->
+                    <CheckBox x:Name="IsEnabledCheckBox"
+                              Content="Enable monitoring immediately"
+                              IsChecked="True"
+                              Style="{StaticResource ModernCheckBoxStyle}"
+                              FontSize="13"
+                              Margin="0,0,0,10"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer Buttons -->
+            <Grid Grid.Row="2" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Test Connection Button -->
+                <Button x:Name="TestButton"
+                        Grid.Column="0"
+                        Content="🔍 Test Connection"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Height="45"
+                        FontSize="14"
+                        Click="Test_Click"
+                        HorizontalAlignment="Left"
+                        MinWidth="150"/>
+
+                <!-- Cancel Button -->
+                <Button Content="Cancel"
+                        Grid.Column="1"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Height="45"
+                        Width="120"
+                        FontSize="14"
+                        Click="Cancel_Click"
+                        Margin="0,0,10,0"/>
+
+                <!-- Add Button -->
+                <Button x:Name="AddButton"
+                        Content="Add Monitor"
+                        Grid.Column="2"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Height="45"
+                        Width="140"
+                        FontSize="14"
+                        Click="Add_Click"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

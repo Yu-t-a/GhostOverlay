@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd complete GhostOverlay monitoring application\n\nImplemented a Windows desktop overlay application for real-time server monitoring\nwith support for HTTP/HTTPS, ICMP Ping, and TCP port checks.\n\nFeatures:\n- Transparent always-on-top overlay window with click-through mode\n- Real-time status monitoring with color-coded indicators (Up/Slow/Down)\n- MVVM architecture with dependency injection\n- System tray integration with notification support\n- Global hotkey support (Ctrl+Shift+O)\n- Configuration management with import/export\n- Dark theme with customizable settings\n- Serilog structured logging\n\nTechnical stack:\n- .NET 8.0 WPF application\n- Microsoft.Extensions.Hosting for DI\n- Three monitoring services (HTTP, Ping, TCP)\n- MVVM pattern with ViewModels\n- Win32 interop for hotkey registration\n\nArchitecture:\n- Models: Endpoint, MonitorResult, AppSettings\n- Services: MonitoringService, ConfigService, NotificationService\n- ViewModels: OverlayViewModel, EndpointResultViewModel\n- Views: OverlayWindow, SettingsWindow, AddMonitorWindow\n- Helpers: HotkeyHelper, TrayIconHelper, Value Converters\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
