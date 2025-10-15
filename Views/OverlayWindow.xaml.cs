@@ -65,15 +65,15 @@ public partial class OverlayWindow : Window
                 Owner = this
             };
 
-            if (addMonitorWindow.ShowDialog() == true && addMonitorWindow.NewEndpoint != null)
+            if (addMonitorWindow.ShowDialog() == true && addMonitorWindow.Result != null)
             {
                 // Get ViewModel and add the endpoint
                 if (DataContext is OverlayViewModel vm)
                 {
-                    vm.AddEndpoint(addMonitorWindow.NewEndpoint);
+                    vm.AddEndpoint(addMonitorWindow.Result);
 
                     MessageBox.Show(
-                        $"Monitor '{addMonitorWindow.NewEndpoint.Name}' has been added successfully!",
+                        $"Monitor '{addMonitorWindow.Result.Name}' has been added successfully!",
                         "Monitor Added",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information

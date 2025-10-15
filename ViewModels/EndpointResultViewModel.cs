@@ -4,12 +4,19 @@ namespace GhostOverlay.ViewModels;
 
 public class EndpointResultViewModel : ViewModelBase
 {
+    private Guid _endpointId;
     private string _endpointName = string.Empty;
     private string _target = string.Empty;
     private EndpointStatus _status;
     private int _latencyMs;
     private DateTime _lastChecked;
     private string? _errorMessage;
+
+    public Guid EndpointId
+    {
+        get => _endpointId;
+        set => SetProperty(ref _endpointId, value);
+    }
 
     public string EndpointName
     {
@@ -55,6 +62,7 @@ public class EndpointResultViewModel : ViewModelBase
 
     public void UpdateFromResult(MonitorResult result, Endpoint endpoint)
     {
+        EndpointId = endpoint.Id;
         EndpointName = endpoint.Name;
         Target = endpoint.Target;
         Status = result.Status;

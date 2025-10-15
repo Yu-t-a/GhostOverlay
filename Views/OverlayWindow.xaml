@@ -10,7 +10,7 @@
         Background="Transparent"
         Topmost="True"
         ShowInTaskbar="False"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         MouseDown="Window_MouseDown">
 
     <Window.Resources>
@@ -141,7 +141,7 @@
                                                    Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </StackPanel>
 
-                                    <!-- Latency Display -->
+                                    <!-- Latency Display & Action Buttons -->
                                     <StackPanel Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right">
@@ -157,6 +157,29 @@
                                                    Style="{StaticResource CaptionTextStyle}"
                                                    HorizontalAlignment="Right"
                                                    Margin="0,4,0,0"/>
+
+                                        <!-- Edit & Delete Buttons -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0,8,0,0">
+                                            <Button Content="✏️"
+                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    ToolTip="Edit"
+                                                    Width="28"
+                                                    Height="28"
+                                                    FontSize="12"
+                                                    Margin="0,0,4,0"/>
+                                            <Button Content="🗑️"
+                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    ToolTip="Delete"
+                                                    Width="28"
+                                                    Height="28"
+                                                    FontSize="12"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Grid>
                             </Border>

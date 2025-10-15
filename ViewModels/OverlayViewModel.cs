@@ -22,6 +22,8 @@ public class OverlayViewModel : ViewModelBase
         MonitorResults = new ObservableCollection<EndpointResultViewModel>();
 
         RefreshCommand = new RelayCommand(async _ => await RefreshAsync());
+        EditCommand = new RelayCommand(EditEndpoint);
+        DeleteCommand = new RelayCommand(DeleteEndpoint);
 
         // Subscribe to result updates
         _monitoringService.ResultUpdated += OnResultUpdated;
@@ -45,6 +47,8 @@ public class OverlayViewModel : ViewModelBase
     }
 
     public ICommand RefreshCommand { get; }
+    public ICommand EditCommand { get; }
+    public ICommand DeleteCommand { get; }
 
     private void LoadEndpoints()
     {
@@ -119,6 +123,53 @@ public class OverlayViewModel : ViewModelBase
 
         // Add to monitoring service
         _monitoringService.AddEndpoint(endpoint);
+
+        // Reload UI
+        LoadEndpoints();
+    }
+
+    private void EditEndpoint(object? parameter)
+    {
+        if (parameter is not EndpointResultViewModel vm) return;
+
+        // Find the endpoint
+        var endpoint = _configService.Settings.Endpoints.FirstOrDefault(e => e.Id == vm.EndpointId);
+        if (endpoint == null) return;
+
+        // Open edit window
+        var editWindow = new Views.AddMonitorWindow(endpoint);
+        if (editWindow.ShowDialog() == true && editWindow.Result != null)
+        {
+            // Update endpoint in config
+            _configService.UpdateEndpoint(editWindow.Result);
+
+            // Restart monitoring for this endpoint
+            _monitoringService.RemoveEndpoint(vm.EndpointId);
+            _monitoringService.AddEndpoint(editWindow.Result);
+
+            // Reload UI
+            LoadEndpoints();
+        }
+    }
+
+    private void DeleteEndpoint(object? parameter)
+    {
+        if (parameter is not EndpointResultViewModel vm) return;
+
+        // Confirm deletion
+        var result = System.Windows.MessageBox.Show(
+            $"Are you sure you want to delete '{vm.EndpointName}'?",
+            "Confirm Delete",
+            System.Windows.MessageBoxButton.YesNo,
+            System.Windows.MessageBoxImage.Question);
+
+        if (result != System.Windows.MessageBoxResult.Yes) return;
+
+        // Remove from monitoring service
+        _monitoringService.RemoveEndpoint(vm.EndpointId);
+
+        // Remove from config
+        _configService.RemoveEndpoint(vm.EndpointId);
 
         // Reload UI
         LoadEndpoints();

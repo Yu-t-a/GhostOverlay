@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="GhostOverlay"
+    Manufacturer="GhostOverlay"
+    Version="1.0.0.0"
+    UpgradeCode="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+
+    <MajorUpgrade
+      DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="GhostOverlay" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+
+    <!-- Uncomment if you have an icon file at the root: icon.ico -->
+    <!-- <Icon Id="icon.ico" SourceFile="..\icon.ico" /> -->
+    <!-- <Property Id="ARPPRODUCTICON" Value="icon.ico" /> -->
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="GhostOverlay" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="GhostOverlay"/>
+    </StandardDirectory>
+
+    <StandardDirectory Id="DesktopFolder" />
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="MainExecutable" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+        <File
+          Id="GhostOverlayEXE"
+          Source="..\publish\win-x64\GhostOverlay.exe"
+          KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <Component Id="ApplicationShortcut" Directory="ApplicationProgramsFolder" Guid="C3D4E5F6-A7B8-9012-CDEF-123456789012">
+      <Shortcut
+        Id="ApplicationStartMenuShortcut"
+        Name="GhostOverlay"
+        Description="Real-time server and website monitoring"
+        Target="[INSTALLFOLDER]GhostOverlay.exe"
+        WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+      <RegistryValue
+        Root="HKCU"
+        Key="Software\GhostOverlay"
+        Name="installed"
+        Type="integer"
+        Value="1"
+        KeyPath="yes"/>
+    </Component>
+
+    <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="D4E5F6A7-B8C9-0123-DEF1-234567890123">
+      <Shortcut
+        Id="DesktopShortcut"
+        Name="GhostOverlay"
+        Description="Real-time server and website monitoring"
+        Target="[INSTALLFOLDER]GhostOverlay.exe"
+        WorkingDirectory="INSTALLFOLDER" />
+      <RegistryValue
+        Root="HKCU"
+        Key="Software\GhostOverlay"
+        Name="desktop"
+        Type="integer"
+        Value="1"
+        KeyPath="yes"/>
+    </Component>
+  </Fragment>
+</Wix>

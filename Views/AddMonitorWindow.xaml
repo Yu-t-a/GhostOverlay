@@ -8,7 +8,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -37,7 +37,7 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid Grid.Row="0" Margin="0,0,0,20" MouseDown="Header_MouseDown" Background="Transparent">
                 <StackPanel Orientation="Horizontal">
                     <Border Width="40" Height="40"
                             Background="{StaticResource PrimaryBlueBrush}"

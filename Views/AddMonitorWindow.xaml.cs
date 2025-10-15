@@ -14,7 +14,9 @@ namespace GhostOverlay.Views;
 
 public partial class AddMonitorWindow : Window
 {
-    public Endpoint? NewEndpoint { get; private set; }
+    private Endpoint? _editingEndpoint;
+
+    public Endpoint? Result { get; private set; }
 
     public AddMonitorWindow()
     {
@@ -28,6 +30,39 @@ public partial class AddMonitorWindow : Window
 
         UpdateTargetHint();
         UpdateTypeDescription();
+    }
+
+    // Constructor for editing existing endpoint
+    public AddMonitorWindow(Endpoint endpoint) : this()
+    {
+        _editingEndpoint = endpoint;
+        Title = "Edit Monitor";
+
+        // Populate fields with existing endpoint data
+        NameTextBox.Text = endpoint.Name;
+        TargetTextBox.Text = endpoint.Target;
+
+        // Select the correct type
+        TypeComboBox.SelectedIndex = endpoint.Type switch
+        {
+            EndpointType.Http => 0,
+            EndpointType.Ping => 1,
+            EndpointType.Tcp => 2,
+            _ => 0
+        };
+
+        IsEnabledCheckBox.IsChecked = endpoint.IsEnabled;
+        IntervalTextBox.Text = endpoint.IntervalSeconds.ToString();
+        TimeoutTextBox.Text = endpoint.TimeoutMs.ToString();
+        SlowThresholdTextBox.Text = endpoint.SlowThresholdMs.ToString();
+        RetryCountTextBox.Text = endpoint.RetryCount.ToString();
+        ExponentialBackoffCheckBox.IsChecked = endpoint.UseExponentialBackoff;
+
+        // Change button text
+        if (AddButton != null)
+        {
+            AddButton.Content = "💾 Save Changes";
+        }
     }
 
     private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,7 +256,7 @@ public partial class AddMonitorWindow : Window
             return;
         }
 
-        NewEndpoint = CreateEndpointFromInputs();
+        Result = CreateEndpointFromInputs();
         DialogResult = true;
         Close();
     }
@@ -236,6 +271,21 @@ public partial class AddMonitorWindow : Window
     {
         DialogResult = false;
         Close();
+    }
+
+    private void Header_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+        {
+            try
+            {
+                this.DragMove();
+            }
+            catch
+            {
+                // DragMove can throw if window is not being dragged properly
+            }
+        }
     }
 
     private bool ValidateInputs(out string errorMessage)
@@ -332,7 +382,7 @@ public partial class AddMonitorWindow : Window
 
         return new Endpoint
         {
-            Id = Guid.NewGuid(),
+            Id = _editingEndpoint?.Id ?? Guid.NewGuid(), // Keep existing ID when editing
             Name = NameTextBox.Text.Trim(),
             Target = TargetTextBox.Text.Trim(),
             Type = type,

@@ -196,6 +196,7 @@ GhostOverlay/
 └── Resources/           # Themes and styles
 ```
 
+
 ### Technologies Used
 
 - **.NET 8.0** - Modern cross-platform framework

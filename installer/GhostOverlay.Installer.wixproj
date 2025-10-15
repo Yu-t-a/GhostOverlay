@@ -1,0 +1,19 @@
+<Project Sdk="WiX.SDK/5.0.2">
+  <PropertyGroup>
+    <OutputName>GhostOverlaySetup</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\WiX Toolset\v5\wix.targets</WixTargetsPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WiX" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GhostOverlay.csproj" />
+  </ItemGroup>
+</Project>

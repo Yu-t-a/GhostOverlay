@@ -5,7 +5,7 @@
         Width="650"
         Height="550"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         Background="#1e1e1e">
 
     <Window.Resources>
