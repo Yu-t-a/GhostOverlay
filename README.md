@@ -9,6 +9,8 @@
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 [![WPF](https://img.shields.io/badge/WPF-Windows-0078D4?style=flat-square&logo=windows)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Yu-t-a/GhostOverlay?style=flat-square)](https://github.com/Yu-t-a/GhostOverlay/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Yu-t-a/GhostOverlay/total?style=flat-square)](https://github.com/Yu-t-a/GhostOverlay/releases)
 
 </div>
 
@@ -34,17 +36,24 @@
 
 ## 🚀 Getting Started
 
+### 📥 Download
+
+**Latest Release:** [GhostOverlay v1.0.0](https://github.com/Yu-t-a/GhostOverlay/releases/latest)
+
 ### Prerequisites
 
-- Windows 10/11
-- [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) or later
+- **Operating System:** Windows 10 or Windows 11 (64-bit)
+- **Runtime:** Not required! (Self-contained .exe includes everything)
 
 ### Installation
 
-#### Option 1: Download Release (Recommended)
-1. Download the latest release from [Releases](https://github.com/Yu-t-a/GhostOverlay/releases)
-2. Extract the ZIP file
-3. Run `GhostOverlay.exe`
+#### Option 1: Standalone .exe (Recommended - No Installation Required)
+1. Download **`GhostOverlay.exe`** from [Latest Release](https://github.com/Yu-t-a/GhostOverlay/releases/latest)
+2. Place the file anywhere you like (Desktop, Program Files, etc.)
+3. Double-click `GhostOverlay.exe` to run
+4. **That's it!** No installation, no .NET Runtime required ✅
+
+> **Note:** The .exe is self-contained (~162 MB) and includes the .NET 8.0 runtime. No additional software installation needed!
 
 #### Option 2: Build from Source
 ```bash
@@ -52,15 +61,14 @@
 git clone https://github.com/Yu-t-a/GhostOverlay.git
 cd GhostOverlay
 
-# Restore dependencies
-dotnet restore
+# Build self-contained .exe
+dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish/win-x64
 
-# Build the project
-dotnet build -c Release
-
-# Run the application
-dotnet run
+# Or use the automated build script
+.\build-installer.ps1
 ```
+
+> **For detailed build instructions**, see [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md)
 
 ---
 
@@ -284,6 +292,17 @@ Please use the [GitHub Issues](https://github.com/Yu-t-a/GhostOverlay/issues) pa
 - [ ] Database history tracking (SQLite)
 - [ ] Export monitoring reports
 - [ ] Auto-updater
+- [ ] MSI installer option
+
+## 🔨 Building & Deployment
+
+For complete build instructions including:
+- Creating standalone .exe files
+- Building MSI installers
+- Publishing to GitHub Releases
+- Customizing build configurations
+
+See the detailed guide: **[BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md)**
 
 ---
 
