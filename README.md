@@ -20,6 +20,18 @@
 
 **GhostOverlay** is a lightweight Windows desktop application that provides real-time server and website monitoring through an always-on-top transparent overlay window. Perfect for developers, system administrators, and DevOps engineers who need to keep an eye on their services without switching windows.
 
+### 📸 Screenshots
+
+<div align="center">
+
+![Main Overlay Window](.github/images/overlay-main.png)
+*Main overlay showing real-time monitoring status*
+
+![Add Monitor Dialog](.github/images/add-monitor.png)
+*Configure new endpoints with the Add Monitor dialog*
+
+</div>
+
 ### ✨ Key Features
 
 - 🎯 **Multi-Protocol Monitoring** - HTTP/HTTPS, ICMP Ping, and TCP port monitoring
